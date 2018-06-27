@@ -12,7 +12,8 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "geerlingguy/centos7"          # https://app.vagrantup.com/geerlingguy/boxes/centos7
+  # https://app.vagrantup.com/geerlingguy/boxes/centos7
+  config.vm.box = "geerlingguy/centos7"          
   config.vm.box_version = "1.2.7"
 
   # Disable automatic box update checking. If you disable this, then
