@@ -1,0 +1,1 @@
+{"virtualbox":{"/vagrant_data/ansible":{"guestpath":"/vagrant_data/ansible","hostpath":"/home/macuared/Ubuntu_DAMT/shared/ansible","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/macuared/Ubuntu_DAMT","disabled":false,"__vagrantfile":true}}}
