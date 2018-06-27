@@ -1,0 +1,17 @@
+---
+- nameme: CENTOS 7 INITIAL PROVISIONING
+  hosts: localhost
+  become: true
+
+  tasks:
+  - name: INSTALLING - Yum Packages
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ list_of_packages }}"
+
+  - name: STARTING SERVICES
+    service:
+      name: "{{ item }}"
+      state: started
+    loop: "{{ start_services }}"

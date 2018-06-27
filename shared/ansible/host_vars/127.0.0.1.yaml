@@ -1,0 +1,11 @@
+---
+list_of_packages:
+  - epel-release
+  - nginx
+  - tree
+  - htop
+  - tcpdump
+  - traceroute
+
+start_services:
+  - nginx
