@@ -1,0 +1,46 @@
+---
+- name: CENTOS 7 INITIAL PROVISIONING
+  hosts: localhost
+  become: true
+
+  tasks:
+  - name: CREATING USER - Making sure we have a 'wheel' group
+    group:
+      name: wheel
+      state: present
+
+  - name: WHEEL GROUP - Passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+  - name: ADDING USER - TO the wheel group
+    user:
+      name: "{{ sudo_user }}"
+      groups: wheel
+      append: yes
+      state: present
+      createhome: yes
+
+  - name: SSH AUTH KEYS - Adding keys for the user
+    authorized_key:
+      user: "{{ sudo_user }}"
+      key: "{{ item }}"
+    with_file:
+      - "/home/vagrant/.ssh/{{ sudo_user }}.pub"
+
+  - name: INSTALLING - Yum Packages
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ list_of_packages }}"
+
+  - name: STARTING SERVICES
+    service:
+      name: "{{ item }}"
+      state: started
+    loop: "{{ start_services }}"
+

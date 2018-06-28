@@ -1,0 +1,7 @@
+---
+- name: CENTOS 7 INITIAL PROVISIONING
+  hosts: localhost
+  become: true
+
+  roles:
+    - base

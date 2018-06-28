@@ -1,4 +1,5 @@
----
+sudo_user: wordpress_dev
+
 list_of_packages:
   - epel-release
   - nginx
