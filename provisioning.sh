@@ -121,7 +121,7 @@ printf "$normal\t\tANSIBLE - Centos7 PROVISIONING$normal\n"
 printf "$normal############################################################################$normal\n"
 cp -R $ANS_REPO $USER_DIR$VENV_NAME/ansible/
 cd $USER_DIR$VENV_NAME/ansible
-ansible-playbook yum_pbook.yaml
+ansible-playbook main.yaml
 printf "\n\n"
 
 # ===================================================================
