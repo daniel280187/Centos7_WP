@@ -51,7 +51,9 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.synced_folder "./shared/ansible", "/vagrant_data/ansible"
-
+  
+  # The wordpress_dev user key to be accepted on the server
+  config.vm.synced_folder "./shared/wordpress_dev.pub", "/home/vagrant/.ssh/wordpress_dev.pub"
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
