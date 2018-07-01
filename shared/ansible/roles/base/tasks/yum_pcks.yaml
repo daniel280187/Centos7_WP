@@ -1,0 +1,16 @@
+---
+- name: INSTALLING - Yum Packages
+  become: yes
+  yum:
+    name: "{{ yum_packages }}"
+    state: present
+
+- debug:
+    msg: 
+      - "Packages:" 
+      - "{{ yum_packages }}"
+
+# Do not use loops with {{ items }} to pass the packages as is inefficient
+# Doing so, it will call the YUM module for every item in the loop.
+# Example here https://github.com/ansible/ansible/issues/24581
+# As an alternative see https://github.com/AerisCloud/ansible-yum

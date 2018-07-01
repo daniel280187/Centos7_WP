@@ -11,8 +11,8 @@
 # Daniel Alejandro Macuare Tombolini
 # 2>&1 > /dev/null                     # Redirects stderr to stdout to only see errors and then redirects stdout to /dev/null to show nothing else.
 # =================================================================== # Variables # ===================================================================
-green_bold="\033[1;32;40m"
-red_bold="\033[1;31;40m"
+green_bold="\033[1;32;49m"
+red_bold="\033[1;31;49m"
 normal="\033[0m"
 VENV_NAME="py3_ansible3"
 ANSIBLE_TAG="v2.5.4"

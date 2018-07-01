@@ -1,0 +1,24 @@
+---
+- name: CREATING USER - Making sure we have a 'wheel' group
+  become: yes
+  group:
+    name: wheel
+    state: present
+
+- name: WHEEL GROUP - Passwordless sudo
+  become: yes
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: ADDING USER - TO the wheel group
+  become: yes
+  user:
+    name: "{{ sudo_user }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes

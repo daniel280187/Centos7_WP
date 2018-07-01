@@ -1,12 +1,14 @@
-sudo_user: wordpress_dev
+---
+sudo_user: wordpress_dev 
 
-list_of_packages:
+yum_packages:
   - epel-release
   - nginx
   - tree
   - htop
   - tcpdump
   - traceroute
+
 
 start_services:
   - nginx
