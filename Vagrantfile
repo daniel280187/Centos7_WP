@@ -50,7 +50,6 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
 
   config.vm.synced_folder "./shared/ansible", "/vagrant_data/ansible"
-  config.vm.synced_folder "./shared/ssh/", "/home/vagrant/.ssh/"
   
   # The wordpress_dev user key to be accepted on the server
 

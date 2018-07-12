@@ -1,6 +1,6 @@
 ---
 - include_tasks: user_creation.yaml
-  when: sudo_user is defined
+  when: users is defined
 
 - include_tasks: yum_pcks.yaml
 

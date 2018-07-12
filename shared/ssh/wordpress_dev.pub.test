@@ -1,5 +1,0 @@
-# Please add your ssh pub key here for your {{ sudo_user }}. Additionally rename this and remove .test out of the key 
-# The repo is configured to copy this key into the Centos7 machine at /home/{{ sudo_user }}/.ssh/{{ sudo_user }}.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCv667wxp1yCr/xT3M9GUmJD2rTsrOxO/oU5PSGKdSyHScrtoJW2SL8OJOnpvFcLxGp6TP3BqEEsYqzwBBbe1X0kZj36OcelwA4m99SZUNjgKm6x1IHJfbSGfiAGiorcsACqQMf3r64pNh3RPpkVbCH9Rx6Ug7DNQbM4Qmpo7SSgQTpDYPPc8UyzL44VbxBUndC38wIZR0zIGkmXC24B47qh3STKG9uYNUYVfnQBNwWgU4hMV0BRXiwZBstmVsha3iAo4BQgDJPv8Un8SU1P+cmcZnpd9kt3f2lxfxXjTS2frFzl09guflQa0az7JkXtTsFpsxtO7BvXKYWNIiIkweH Test Key
-
-

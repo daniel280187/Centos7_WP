@@ -1,9 +1,10 @@
 ---
-- name: CREATING USER - Making sure we have a 'wheel' group
+- name: VALIDATING - Making sure we have a 'wheel' group
   become: yes
   group:
     name: wheel
     state: present
+     
 
 - name: WHEEL GROUP - Passwordless sudo
   become: yes
@@ -13,12 +14,35 @@
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
+  when: "item.use_sudo == true" 
+  loop: "{{ users }}"
 
-- name: ADDING USER - TO the wheel group
-  become: yes
+- name: CREATING USER - Sudo User
   user:
-    name: "{{ sudo_user }}"
+    name: "{{ item.username }}"
     groups: wheel
     append: yes
     state: present
     createhome: yes
+  when: " item.use_sudo == true" 
+  loop: "{{ users }}"
+  
+
+- name: CREATING USER - Non-sudo user
+  user:
+    name: "{{ item.username }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
+  when: "item.use_sudo == false" 
+  loop : "{{ users }}"
+
+- name: "SSH AUTHORIZED Keys - Adding user's keys"
+  authorized_key:
+    user: "{{ item.username }}"
+    state: present
+    key: "{{ item.ssh_pub_key }}"
+    path: "{{ auth_key_dir }}/{{ item.username }}.pub"
+  when: item.ssh_access is defined
+  loop: "{{ users }}"
