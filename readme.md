@@ -1,4 +1,4 @@
-# Wordpress Dev - Centos7
+# Wordpress Dev - Centos7   (Readme in Progress)
 
 The purpose of this project is to have a consistent environemnt to develop a wordpress site. If you are starting with Wordpress this will help you to get up and running quickly.
 
