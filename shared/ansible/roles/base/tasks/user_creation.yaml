@@ -36,7 +36,7 @@
     state: present
     createhome: yes
   when: "item.use_sudo == false" 
-  loop : "{{ users }}"
+  loop: "{{ users }}"
 
 - name: "SSH AUTHORIZED Keys - Adding user's keys"
   authorized_key:
@@ -44,5 +44,7 @@
     state: present
     key: "{{ item.ssh_pub_key }}"
     path: "{{ auth_key_dir }}/{{ item.username }}.pub"
-  when: item.ssh_access is defined
+  when:
+    - item.ssh_access is defined
+    - "item.ssh_access == true"
   loop: "{{ users }}"
