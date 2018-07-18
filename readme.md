@@ -23,7 +23,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ```
 git clone https://github.com/daniel280187/Centos7_WP.git
-
+If you are going to add ssh keys for an user:
+    Put your Public key in shared/ansible/roles/base/files
+    SSH Keys will be added to the 'auth_key_dir' defined in shared/ansible/roles/base/vars/main.yaml
 ```
 
 And repeat

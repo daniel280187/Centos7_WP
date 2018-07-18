@@ -5,7 +5,6 @@
     name: wheel
     state: present
      
-
 - name: WHEEL GROUP - Passwordless sudo
   become: yes
   lineinfile:
@@ -26,7 +25,7 @@
     createhome: yes
   when: " item.use_sudo == true" 
   loop: "{{ users }}"
-  
+
 
 - name: CREATING USER - Non-sudo user
   user:
@@ -36,15 +35,36 @@
     state: present
     createhome: yes
   when: "item.use_sudo == false" 
+  loop : "{{ users }}"
+
+- name: VALIDATING - Auth Key Dir is created
+  become: yes
+  file:
+    state: directory
+    path: "{{ auth_key_dir }}/"
+    owner: root 
+    group: root
+    mode: 0755
+
+- name: "MOVING - User's keys to {{ auth_key_dir }}"
+  become: yes
+  copy:
+    src: 'roles/base/files/{{ item.username }}.pub'
+    dest: "{{ auth_key_dir }}/" 
+    owner: root 
+    group: root
+    mode: 0644
   loop: "{{ users }}"
 
-- name: "SSH AUTHORIZED Keys - Adding user's keys"
-  authorized_key:
-    user: "{{ item.username }}"
-    state: present
-    key: "{{ item.ssh_pub_key }}"
-    path: "{{ auth_key_dir }}/{{ item.username }}.pub"
-  when:
-    - item.ssh_access is defined
-    - "item.ssh_access == true"
-  loop: "{{ users }}"
+- name: UPDATING - SSHD Config file 
+  become: yes
+  template: 
+    src: roles/base/templates/sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    owner: root
+    group: root 
+    mode: 0644
+    validate: '/usr/sbin/sshd -T -f %s'
+  notify:
+  - restart sshd
