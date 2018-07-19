@@ -1,0 +1,7 @@
+---
+- name: ENABLING SERVICES
+  become: yes
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  loop: "{{ enable_services }}"

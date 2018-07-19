@@ -10,12 +10,29 @@ users:
  
 yum_packages:
   - epel-release
-  - nginx
   - tree
   - htop
   - tcpdump
   - traceroute
-
+  - wget
+  - unzip
+  - httpd
+  - mariadb
+  - mariadb-server
+  - php
+  - php-common
+  - php-mysql
+  - php-gd
+  - php-xml
+  - php-mbstring
+  - php-mcrypt
+  - php-xmlrpc
 
 start_services:
-  - nginx
+  - httpd
+  - mariadb
+
+enable_services:
+  - httpd
+  - mariadb
+
