@@ -7,7 +7,6 @@ users:
     ssh_access: true
     ssh_pub_key: "{{ lookup('file', 'wordpress_dev.pub' ) }}"
 
- 
 yum_packages:
   - epel-release
   - tree
@@ -35,4 +34,3 @@ start_services:
 enable_services:
   - httpd
   - mariadb
-

@@ -6,8 +6,8 @@
     state: present
 
 - debug:
-    msg: 
-      - "Packages:" 
+    msg:
+      - "Packages:"
       - "{{ yum_packages }}"
 
 # Do not use loops with {{ items }} to pass the packages as is inefficient
