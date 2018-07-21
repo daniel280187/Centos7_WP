@@ -15,22 +15,11 @@ yum_packages:
   - traceroute
   - wget
   - unzip
-  - httpd
-  - mariadb
-  - mariadb-server
-  - php
-  - php-common
-  - php-mysql
-  - php-gd
-  - php-xml
-  - php-mbstring
-  - php-mcrypt
-  - php-xmlrpc
 
-start_services:
-  - httpd
-  - mariadb
+# start_services:
+#   - httpd
+#   - mariadb
 
-enable_services:
-  - httpd
-  - mariadb
+# enable_services:
+#   - httpd
+#   - mariadb

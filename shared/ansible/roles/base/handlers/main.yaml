@@ -4,4 +4,4 @@
   service:
     name: sshd
     state: restarted
-  listen: restart sshd
+  listen: "restart sshd"
