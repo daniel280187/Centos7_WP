@@ -1,8 +1,6 @@
 ---
 yum_packs:
   - httpd
-  - mariadb
-  - mariadb-server
   - php
   - php-common
   - php-mysql
@@ -14,8 +12,6 @@ yum_packs:
 
 start_serv:
   - httpd
-  - mariadb
 
 enable_serv:
   - httpd
-  - mariadb
