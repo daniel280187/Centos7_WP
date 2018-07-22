@@ -1,2 +1,3 @@
 .vagrant/
 shared/ssh/wordpress_dev.pub
+.vault_pass
