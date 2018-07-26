@@ -1,0 +1,26 @@
+---
+yum_packs:
+  - httpd
+  - php
+  - php-common
+  - php-mysql
+  - php-gd
+  - php-xml
+  - php-mbstring
+  - php-mcrypt
+  - php-xmlrpc
+
+start_serv:
+  - httpd
+
+enable_serv:
+  - httpd
+httpd_config: "/etc/httpd/conf/httpd.conf"
+httpd_ServerRoot: "/etc/httpd"
+httpd_Listen: "127.0.0.1:80"
+httpd_ServerAdmin: "test@example.com"
+# httpd_ServerName: "example.com"
+httpd_ServerTokens: "Prod"
+httpd_DocumentRoot: "/var/www/html"
+httpd_ErrorLog: "logs/error_log"
+httpd_LogLevel: "warn"

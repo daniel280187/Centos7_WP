@@ -5,3 +5,5 @@
     name: "{{ item }}"
     enabled: yes
   loop: "{{ enable_serv }}"
+  notify:
+    - "restart httpd"

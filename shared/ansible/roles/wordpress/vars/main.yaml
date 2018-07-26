@@ -1,17 +1,3 @@
 ---
 yum_packs:
-  - httpd
-  - php
-  - php-common
-  - php-mysql
-  - php-gd
-  - php-xml
-  - php-mbstring
-  - php-mcrypt
-  - php-xmlrpc
-
-start_serv:
-  - httpd
-
-enable_serv:
-  - httpd
+  - wordpress
