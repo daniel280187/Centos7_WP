@@ -13,7 +13,7 @@
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
-  when: "item.use_sudo == true"
+  when: "item.use_sudo is defined and item.use_sudo == true"
   loop: "{{ users }}"
 
 - name: CREATING USER - Sudo User
@@ -23,7 +23,7 @@
     append: yes
     state: present
     createhome: yes
-  when: " item.use_sudo == true"
+  when: "item.use_sudo is defined and item.use_sudo == true"
   loop: "{{ users }}"
 
 
@@ -34,7 +34,7 @@
     append: yes
     state: present
     createhome: yes
-  when: "item.use_sudo == false"
+  when: "item.use_sudo is defined and item.use_sudo == false"
   loop: "{{ users }}"
 
 - name: VALIDATING - Auth Key Dir is created

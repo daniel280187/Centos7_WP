@@ -6,6 +6,8 @@ users:
     use_sudo: true
     ssh_access: true
     ssh_pub_key: "{{ lookup('file', 'wordpress_dev.pub' ) }}"
+  - username: vagrant
+
 
 yum_packages:
   - epel-release
