@@ -15,7 +15,8 @@ green_bold="\033[1;32;49m"
 red_bold="\033[1;31;49m"
 normal="\033[0m"
 VENV_NAME="py3_ansible3"
-ANSIBLE_TAG="v2.5.4"
+#ANSIBLE_TAG="v2.5.4"
+ANSIBLE_TAG="v2.6.0"
 ANS_REPO="/vagrant_data/ansible/"       # Point to this location on your Vagrantfile.
 USER_DIR="/home/vagrant/"
 APT_PACKS=(
@@ -29,6 +30,7 @@ APT_PACKS=(
         python36u-pip
         python36u-devel
         dh-autoreconf                   # Requirement to install libyaml
+        http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 )
 
 
@@ -50,6 +52,10 @@ printf "$normal#################################################################
 
 INST_PACK "${APT_PACKS[@]}"
 printf "\n\n"
+
+#Pre task to install PHP72 with Ansible
+printf "$green_bold[ENABLING]\t\t$normal - $red_bold Remi repo for php-72 $normal"
+sudo yum-config-manager --enable remi-php72
 
 # First Update after yum packets
 printf "$green_bold[UPDATING]\t\t$normal - $red_bold YUM (This may take some minutes) $normal"
