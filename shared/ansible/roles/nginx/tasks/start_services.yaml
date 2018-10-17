@@ -1,0 +1,6 @@
+---
+- name: STARTING SERVICES
+  service:
+    name: "{{ item }}"
+    state: started
+  loop: "{{ start_serv }}"

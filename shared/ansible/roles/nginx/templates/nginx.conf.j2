@@ -1,0 +1,112 @@
+# This file is managed by Ansible
+# .roles/nginx/templates/nginx.conf.j2
+
+user {{ nginx_user }};
+worker_processes auto;
+error_log {{ nginx_errorlog }};
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+  
+    access_log  {{ nginx_accesslog }}  main;
+   
+    {% if nginx_enable_ssl == true %}
+    # SSL
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    {% endif %}
+
+    {% if nginx_enable_gzip == true %}
+    # GZIP
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_min_length 512;
+    gzip_types text/plain text/html application/x-javascript text/javascript application/javascript text/xml text/css application/font-sfnt;
+    {% endif %}
+
+    # CACHING
+    fastcgi_cache_path {{ nginx_cache_dir }} levels=1:2 keys_zone=microcache:10m max_size=1024m inactive=1h;
+
+    # INCLUDES
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+    include /etc/nginx/mime.types;
+
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    default_type        application/octet-stream;
+
+    server {
+        listen       *:80 default_server;
+        listen       [::]:80 default_server;
+
+        {% if nginx_enable_ssl == true -%}
+        listen        *:443 ssl http2;
+        listen       [::]:443 ssl http2;
+        {%- endif %}
+
+        server_name  {{ nginx_server_name }};
+        root         {{ nginx_server_root }};
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        location / {
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+
+# Settings for a TLS enabled server.
+#
+#    server {
+#        listen       443 ssl http2 default_server;
+#        listen       [::]:443 ssl http2 default_server;
+#        server_name  _;
+#        root         /usr/share/nginx/html;
+#
+#        ssl_certificate "/etc/pki/nginx/server.crt";
+#        ssl_certificate_key "/etc/pki/nginx/private/server.key";
+#        ssl_session_cache shared:SSL:1m;
+#        ssl_session_timeout  10m;
+#        ssl_ciphers HIGH:!aNULL:!MD5;
+#        ssl_prefer_server_ciphers on;
+#
+#        # Load configuration files for the default server block.
+#        include /etc/nginx/default.d/*.conf;
+#
+#        location / {
+#        }
+#
+#        error_page 404 /404.html;
+#            location = /40x.html {
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#            location = /50x.html {
+#        }
+#    }
+
+}
