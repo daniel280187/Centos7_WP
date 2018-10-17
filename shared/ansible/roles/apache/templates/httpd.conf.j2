@@ -34,7 +34,13 @@ DocumentRoot {{ httpd_DocumentRoot }}
 </Directory>
 
 # Further relax access to the default document root:
-<Directory "{{ httpd_DocumentRoot }}">
+<Directory {{ httpd_DocumentRoot }}>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+<Directory {{ httpd_CustomDir }}>
     Options Indexes FollowSymLinks
     AllowOverride None
     Require all granted
@@ -52,7 +58,7 @@ DocumentRoot {{ httpd_DocumentRoot }}
 
 # Logging
 ErrorLog "{{ httpd_ErrorLog }}"
-LogLevel {{ httpd_LogLevel }}
+LogLevel "{{ httpd_LogLevel }}"
 
 <IfModule log_config_module>
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
