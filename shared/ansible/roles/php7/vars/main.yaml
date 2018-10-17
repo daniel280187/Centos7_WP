@@ -1,0 +1,28 @@
+---
+yum_packs:
+  - php72
+  - php72-php-fpm
+  - php72-php-opcache.x86_64
+  - php72-php-pecl-apcu.x86_64
+  - php72-php-cli.x86_64
+  - php72-php-pear.noarch
+  - php72-php-pdo.x86_64
+  - php72-php-mysqlnd.x86_64
+  - php72-php-pgsql.x86_64
+  - php72-php-pecl-mongodb.x86_64
+  - php72-php-phpiredis.x86_64
+  - php72-php-pecl-memcache.x86_64
+  - php72-php-pecl-memcached.x86_64
+  - php72-php-gd.x86_64
+  - php72-php-mbstring.x86_64
+  - php72-php-pecl-mcrypt.x86_64
+  - php72-php-xml.x86_64
+  - php72-php-pecl-zip.x86_64
+
+start_serv:
+  - php72-php-fpm
+
+enable_serv:
+  - php72-php-fpm
+
+php72_config: '/etc/opt/remi/php72/php-fpm.d/www.conf'

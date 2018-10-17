@@ -1,0 +1,7 @@
+---
+- name: 'Restart PHP 7.2'
+  become: yes
+  service:
+    name: php72-php-fpm
+    state: restarted
+  listen: "restart php72"
