@@ -18,6 +18,7 @@ yum_packs:
   - php72-php-pecl-mcrypt.x86_64
   - php72-php-xml.x86_64
   - php72-php-pecl-zip.x86_64
+  - php72-php-xmlrpc.x86_64 
 
 start_serv:
   - php72-php-fpm

@@ -1,4 +1,13 @@
 ---
+- name: 'VALIDATING - {{ nginx_cache_dir }} exists'
+  become: True
+  file:
+    state: directory  
+    path: '{{ nginx_cache_dir }}'
+    owner: 'root'
+    group: 'root'
+    mode: 0755
+
 - name: 'CREATING New NGINX Configuration file + Backup'
   template:
     src: nginx.conf.j2
