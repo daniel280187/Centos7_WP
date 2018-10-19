@@ -1,11 +1,59 @@
 ---
-- name: CREATING Configuration file
+- name: 'CREATING - PHP72 Global Php-fpm config file at :{{ php72_php_fpm_conf }}'
+  become: True
   template:
-    src: php72.conf.j2
-    dest: "{{ php72_config }}"
+    src: php72_php-fpm_conf.j2
+    dest: '{{ php72_php_fpm_conf }}'
+    owner: 'root'
+    group: 'root'
+    setype: php72_config_t
+    backup: True
+    mode: 0666
+  notify: restart php72
+  tags: php72
+
+
+- name: 'CREATING - PHP72 socket dir at: {{ php72_socket_dir }}'
+  become: True
+  file:
+    path: '{{ php72_socket_dir }}'
+    owner: root
+    group: root
+    state: directory
+    mode: 0755
+
+
+- name: 'CREATING - PHP72 pool.d dir at: {{ php72_pool_d_dir }}'
+  become: True
+  file:
+    path: '{{ php72_pool_d_dir }}'
+    owner: root
+    group: root
+    state: directory
+    mode: 0755
+
+
+- name: 'CREATING - PHP72 default pool config at: {{ php72_def_pool_conf }}'
+  template:
+    src: php72_www_conf.j2
+    dest: "{{ php72_def_pool_conf }}"
     owner: root
     group: root
     setype: php72_config_t
+    backup: True
+    mode: '0644'
+  notify: restart php72
+  tags: php72
+
+
+- name: 'CREATING - PHP72 Default config file (ini) file at: {{ php72_ini_file }}'
+  template:
+    src: php72_ini_file.j2
+    dest: "{{ php72_ini_file }}"
+    owner: root
+    group: root
+    setype: php72_config_t
+    backup: True
     mode: '0644'
   notify: restart php72
   tags: php72

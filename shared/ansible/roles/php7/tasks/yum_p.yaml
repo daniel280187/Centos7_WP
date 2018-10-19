@@ -1,5 +1,5 @@
 ---
-- name: 'INSTALLING - PHP 7.2 Yum Packages'
+- name: 'INSTALLING - PHP 7.2 Yum Packages (This may take some time)'
   become: yes
   yum:
     name: "{{ yum_packs }}"

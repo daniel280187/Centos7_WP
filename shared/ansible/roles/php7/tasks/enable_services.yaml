@@ -1,5 +1,5 @@
 ---
-- name: ENABLING SERVICES
+- name: 'ENABLING - PHP 7.2'
   become: yes
   service:
     name: "{{ item }}"
