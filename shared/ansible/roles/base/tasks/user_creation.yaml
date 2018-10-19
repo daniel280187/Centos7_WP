@@ -5,7 +5,7 @@
     name: wheel
     state: present
 
-- name: WHEEL GROUP - Passwordless sudo
+- name: VALIDATING - Wheel Group - Passwordless sudo
   become: yes
   lineinfile:
     dest: /etc/sudoers
@@ -16,7 +16,7 @@
   when: "item.use_sudo is defined and item.use_sudo == true"
   loop: "{{ users }}"
 
-- name: CREATING USER - Sudo User
+- name: CREATING - Sudo Users
   user:
     name: "{{ item.username }}"
     groups: wheel
@@ -27,7 +27,7 @@
   loop: "{{ users }}"
 
 
-- name: CREATING USER - Non-sudo user
+- name: CREATING - Non-sudo users
   user:
     name: "{{ item.username }}"
     groups: wheel
@@ -46,7 +46,7 @@
     group: root
     mode: 0755
 
-- name: "MOVING - User's keys to {{ auth_key_dir }}"
+- name: "MOVING - Users' keys to {{ auth_key_dir }}"
   become: yes
   copy:
     src: 'roles/base/files/{{ item.username }}.pub'
@@ -56,7 +56,7 @@
     mode: 0644
   loop: "{{ users }}"
 
-- name: UPDATING - SSHD Config file
+- name: CREATING - SSHD Config file
   become: yes
   template:
     src: roles/base/templates/sshd_config.j2

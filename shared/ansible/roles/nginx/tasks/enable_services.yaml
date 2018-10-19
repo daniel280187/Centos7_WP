@@ -1,5 +1,5 @@
 ---
-- name: ENABLING SERVICES
+- name: 'ENABLING  - NGINX'
   become: yes
   service:
     name: "{{ item }}"

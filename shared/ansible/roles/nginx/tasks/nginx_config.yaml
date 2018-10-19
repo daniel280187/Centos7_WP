@@ -1,5 +1,5 @@
 ---
-- name: 'VALIDATING - {{ nginx_cache_dir }} exists'
+- name: 'VALIDATING - NGINX Cache_dir: {{ nginx_cache_dir }} exists'
   become: True
   file:
     state: directory  
@@ -8,7 +8,7 @@
     group: 'root'
     mode: 0755
 
-- name: 'CREATING New NGINX Configuration file + Backup'
+- name: 'CREATING - NGINX Config file: "{{ nginx_config }}" + Backup + Validation'
   template:
     src: nginx.conf.j2
     dest: "{{ nginx_config }}"
@@ -20,5 +20,3 @@
     validate: 'nginx -t -c %s'
   notify: restart nginx
   tags: nginx
-
-

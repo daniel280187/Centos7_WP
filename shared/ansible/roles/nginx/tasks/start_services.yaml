@@ -1,5 +1,5 @@
 ---
-- name: STARTING SERVICES
+- name: 'STARTING - NGINX'
   service:
     name: "{{ item }}"
     state: started

@@ -1,5 +1,5 @@
 ---
-- name: INSTALLING - Yum Packages
+- name: INSTALLING - Base Yum Packages
   become: yes
   yum:
     name: "{{ yum_packages }}"

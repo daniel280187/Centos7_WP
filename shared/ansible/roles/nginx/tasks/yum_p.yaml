@@ -1,5 +1,5 @@
 ---
-- name: INSTALLING - Yum Packages
+- name: INSTALLING - NGINX Yum Package
   become: yes
   yum:
     name: "{{ yum_packs }}"

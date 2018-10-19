@@ -1,10 +1,10 @@
 ---
-- name: Creates "/www/var/html/blog" directory 
+- name: 'CREATING - Blog directory: "/www/var/html/blog"'
   become: yes
   file:
     path: "/www/var/html/blog"
     state: directory
 
-- name: Copy Wordpress Dir to "/www/var/html/blog"
+- name: 'COPYING -  Wordpress Dir: "/usr/share/wordpress" --> "/www/var/html/blog/"'
   become: yes
   command: "cp -ar /usr/share/wordpress/ /var/www/html/blog/"
