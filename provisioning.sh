@@ -30,7 +30,7 @@ APT_PACKS=(
         python36u-pip
         python36u-devel
         dh-autoreconf                   # Requirement to install libyaml
-        http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        http://rpms.remirepo.net/enterprise/remi-release-7.rpm   # Requirement to install PHP7.2 via YUM
 )
 
 
@@ -54,7 +54,7 @@ INST_PACK "${APT_PACKS[@]}"
 printf "\n\n"
 
 #Pre task to install PHP72 with Ansible
-printf "$green_bold[ENABLING]\t\t$normal - $red_bold Remi repo for php-72 $normal"
+printf "$green_bold[ENABLING]\t$normal - Repo: $red_bold Remi repo for php-72 $normal"
 sudo yum-config-manager --enable remi-php72
 
 # First Update after yum packets
