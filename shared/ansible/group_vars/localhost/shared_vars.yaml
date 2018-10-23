@@ -1,0 +1,4 @@
+---
+domain_name: 'danielmacuare.com'
+php72_socket_file: 'danielmacuare.sock'
+php72_socket_dir: '/var/run/php72-fpm/'
