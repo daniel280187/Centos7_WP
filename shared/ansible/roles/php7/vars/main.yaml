@@ -28,9 +28,7 @@ enable_serv:
 
 
 php72_nginx_user: "nginx"
-php72_socket_file: 'phpwordpress.sock'
 php72_php_fpm_conf: '/etc/opt/remi/php72/php-fpm.conf'
-php72_socket_dir: '/var/run/php72-fpm/'
 php72_pool_d_dir: '/etc/opt/remi/php72/fpm/pool.d/'
 php72_def_pool_conf: '{{ php72_pool_d_dir }}www.conf'
 php72_error_log: '/var/opt/remi/php72/log/php-fpm/www-error.log'
