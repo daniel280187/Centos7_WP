@@ -8,3 +8,13 @@
 - name: 'COPYING -  Wordpress Dir: "/usr/share/wordpress" --> "/www/var/html/blog/"'
   become: yes
   command: "cp -ar /usr/share/wordpress/ /var/www/html/blog/"
+
+- name: 'CREATING - NGINX vhost config file at {{ nginx_vhost_wpsite }}'
+  template:
+    src: 'ngninx_vhost.j2'
+    dest: '{{ nginx_vhost_wpsite }}'
+    owner: root
+    group: root
+    mode: 0644
+    backup: True
+  notify: 'restart nginx'
