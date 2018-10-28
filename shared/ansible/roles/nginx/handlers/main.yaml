@@ -1,5 +1,5 @@
 ---
-- name: 'Restart NGINX'
+- name: 'HANDLER - Restart NGINX'
   become: yes
   service:
     name: nginx

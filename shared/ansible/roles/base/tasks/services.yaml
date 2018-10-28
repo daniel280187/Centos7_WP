@@ -1,0 +1,12 @@
+---
+- name: 'ENABLING - SSHD'
+  become: yes
+  service:
+    name: 'sshd'
+    enabled: yes
+
+- name: 'STARTING - NGINX'
+  become: yes
+  service:
+    name: 'sshd'
+    state: started

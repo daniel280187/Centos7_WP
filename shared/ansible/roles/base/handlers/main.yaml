@@ -1,5 +1,5 @@
 ---
-- name: Restart the SSHD Service
+- name: 'HANDLER - Restart the SSHD Service'
   become: yes
   service:
     name: sshd

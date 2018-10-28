@@ -37,7 +37,32 @@
   when: "item.use_sudo is defined and item.use_sudo == false"
   loop: "{{ users }}"
 
-- name: VALIDATING - Auth Key Dir is created
+
+- name: "CREATING - The Blog's system user: '{{ web_username }} at /home/{{web_username }}/'"
+  user:
+    name: '{{ web_username }}'
+    comment: 'System user for the blog'
+    create_home: True
+    system: True
+    password: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
+    shell: '/bin/bash'
+    state: 'present'
+
+
+- name: "CREATING - The Blog's system user dirs : {{ item }}"
+  become: True
+  file:
+    path: '{{ item }}'
+    owner: '{{ web_username }}'
+    group: '{{ web_group }}'
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ web_username_logs_dir }}"
+    - "{{ web_username_web_dir }}"
+
+
+- name: "VALIDATING - Auth Key Dir is created"
   become: yes
   file:
     state: directory

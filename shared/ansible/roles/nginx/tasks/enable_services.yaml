@@ -1,9 +1,0 @@
----
-- name: 'ENABLING  - NGINX'
-  become: yes
-  service:
-    name: "{{ item }}"
-    enabled: yes
-  loop: "{{ enable_serv }}"
-  notify:
-    - "restart nginx"

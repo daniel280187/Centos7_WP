@@ -1,6 +1,0 @@
----
-- name: 'STARTING - PHP 7.2'
-  service:
-    name: "{{ item }}"
-    state: started
-  loop: "{{ start_serv }}"

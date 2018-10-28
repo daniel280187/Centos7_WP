@@ -1,6 +1,0 @@
----
-- name: 'STARTING - NGINX'
-  service:
-    name: "{{ item }}"
-    state: started
-  loop: "{{ start_serv }}"

@@ -2,13 +2,13 @@
 - name: 'INSTALLING - PHP 7.2 Yum Packages (This may take some time)'
   become: yes
   yum:
-    name: "{{ yum_packs }}"
+    name: "{{ yum_php72 }}"
     state: present
 
 - debug:
     msg:
       - "Packages:"
-      - "{{ yum_packs }}"
+      - "{{ yum_php72 }}"
 
 # Do not use loops with {{ items }} to pass the packages as is inefficient
 # Doing so, it will call the YUM module for every item in the loop.

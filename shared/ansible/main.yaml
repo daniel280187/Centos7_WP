@@ -5,6 +5,8 @@
 
   roles:
     - base
-    - apache
     - mariadb
+    - nginx
+    - php7
     - wordpress
+    #- apache

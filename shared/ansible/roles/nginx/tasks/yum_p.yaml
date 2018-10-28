@@ -2,13 +2,13 @@
 - name: INSTALLING - NGINX Yum Package
   become: yes
   yum:
-    name: "{{ yum_packs }}"
+    name: "{{ yum_nginx }}"
     state: present
 
 - debug:
     msg:
       - "Packages:"
-      - "{{ yum_packs }}"
+      - "{{ yum_nginx }}"
 
 # Do not use loops with {{ items }} to pass the packages as is inefficient
 # Doing so, it will call the YUM module for every item in the loop.

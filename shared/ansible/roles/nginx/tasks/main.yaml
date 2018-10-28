@@ -1,10 +1,6 @@
 ---
 - include_tasks: yum_p.yaml
 
-- include_tasks: start_services.yaml
-  when: "start_serv is defined"
+- include_tasks: services.yaml
 
-- include_tasks: enable_services.yaml
-  when: "enable_serv is defined"
-
-- include_tasks: nginx_config.yaml
+- include_tasks: setup.yaml

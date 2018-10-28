@@ -1,15 +1,15 @@
 ---
-- name: 'CREATING - Blog directory: "/www/var/html/blog"'
+- name: 'CREATING - Blog directory at "/www/var/html/blog"'
   become: yes
   file:
     path: "/www/var/html/blog"
     state: directory
 
-- name: 'COPYING -  Wordpress Dir: "/usr/share/wordpress" --> "/www/var/html/blog/"'
+- name: 'COPYING -  Wordpress Dir: "/usr/share/wordpress" --> "{{ wordpress_documentroot }}"'
   become: yes
-  command: "cp -ar /usr/share/wordpress/ /var/www/html/blog/"
+  command: "cp -ar /usr/share/wordpress/ {{ wordpress_documentroot }}"
 
-- name: 'CREATING - NGINX vhost config file at {{ nginx_vhost_wpsite }}'
+- name: 'CREATING - NGINX vhost config file at "{{ nginx_vhost_wpsite }}"'
   template:
     src: 'ngninx_vhost.j2'
     dest: '{{ nginx_vhost_wpsite }}'

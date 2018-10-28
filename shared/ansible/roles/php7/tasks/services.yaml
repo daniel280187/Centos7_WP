@@ -1,0 +1,12 @@
+---
+- name: 'ENABLING - NGINX'
+  become: yes
+  service:
+    name: 'php72-php-fpm'
+    enabled: yes
+
+- name: 'STARTING - NGINX'
+  become: yes
+  service:
+    name: 'php72-php-fpm'
+    state: started

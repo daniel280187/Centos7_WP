@@ -8,6 +8,9 @@
     group: 'root'
     mode: 0755
 
+
+
+
 - name: 'CREATING - NGINX Config file: "{{ nginx_config }}" + Backup + Validation'
   template:
     src: nginx.conf.j2

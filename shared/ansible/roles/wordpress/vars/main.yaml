@@ -1,5 +1,0 @@
----
-yum_packs:
-  - wordpress
-
-nginx_vhost_wpsite: '/etc/nginx/conf.d/danielmacuare.conf'

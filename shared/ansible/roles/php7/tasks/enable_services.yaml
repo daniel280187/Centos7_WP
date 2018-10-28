@@ -1,9 +1,0 @@
----
-- name: 'ENABLING - PHP 7.2'
-  become: yes
-  service:
-    name: "{{ item }}"
-    enabled: yes
-  loop: "{{ enable_serv }}"
-  notify:
-    - "restart php72"

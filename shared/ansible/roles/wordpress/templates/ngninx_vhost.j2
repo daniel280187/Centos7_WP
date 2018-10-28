@@ -1,11 +1,11 @@
 server {
     listen       80;
-    server_name  www.danielmacuare.com;
+    server_name  www.{{ domain_name }};
 
     client_max_body_size 20m;
 
     index index.php index.html index.htm;
-    root   /var/www/html/blog/public_html;
+    root   {{ wordpress_documentroot }}public_html;
 
     location / {
         try_files $uri $uri/ /index.php?q=$uri&$args;
@@ -52,7 +52,7 @@ server {
 
 
             # General FastCGI handling
-            fastcgi_pass unix:/var/run/php72-fpm/danielmacuare.sock;
+            fastcgi_pass unix:{{ php72_socket_dir }}{{ php72_socket_file }};
             fastcgi_pass_header Set-Cookie;
             fastcgi_pass_header Cookie;
             fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
@@ -75,4 +75,10 @@ server {
     #location ~ /\.ht {
     #    deny  all;
     #}
+}
+
+server {
+    listen       80;
+    server_name  {{ domain_name }};
+    rewrite ^/(.*)$ http://www.{{ domain_name }}/$1 permanent;
 }
