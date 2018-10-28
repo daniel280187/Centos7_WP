@@ -141,4 +141,3 @@ sudo yum --quiet -y upgrade > /dev/null 2>&1
 printf "$normal\n\n############################################################################$normal\n"
 printf "$normal\t\tINITIAL SETUP IS FINISHED$normal\n"
 printf "$normal############################################################################$normal"
-
