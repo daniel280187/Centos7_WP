@@ -5,7 +5,7 @@
     name: 'sshd'
     enabled: yes
 
-- name: 'STARTING - NGINX'
+- name: 'STARTING - SSHD'
   become: yes
   service:
     name: 'sshd'

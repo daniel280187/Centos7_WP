@@ -1,11 +1,25 @@
-server {
-    listen       80;
-    server_name  www.{{ domain_name }};
+# {{ ansible_managed }}
+# .roles/nginx/templates/nginx.conf.j2
+# /etc/nginx/conf.d/danielmacuare.conf
 
-    client_max_body_size 20m;
+server {
+    listen       *:80 default_server;
+    listen       [::]:80 default_server;
+
+    {% if nginx_enable_ssl == true -%}
+    listen       *:443 ssl http2;
+    listen       [::]:443 ssl http2;
+    {%- endif %}
+
+    server_name  *.{{ domain_name }};
+    root   {{ wordpress_documentroot }};
+
+    access_log  {{ nginx_wpsite_access_log }};
+    error_log   {{ nginx_wpsite_error_log }};
 
     index index.php index.html index.htm;
-    root   {{ wordpress_documentroot }}public_html;
+    client_max_body_size 20m;
+
 
     location / {
         try_files $uri $uri/ /index.php?q=$uri&$args;

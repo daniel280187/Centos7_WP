@@ -28,6 +28,8 @@ nginx_config: "/etc/nginx/nginx.conf"
 nginx_user: "nginx"
 nginx_errorlog: "/var/log/nginx/error_log"
 nginx_accesslog: "/var/log/nginx/access_log"
+nginx_wpsite_error_log: '{{ web_username_home_dir }}/logs/nginx_error.log'
+nginx_wpsite_access_log: '{{ web_username_home_dir }}/logs/nginx_access.log'
 nginx_enable_gzip: True
 nginx_cache_dir: '/usr/share/nginx/cache/fcgi'
 
@@ -48,6 +50,7 @@ php72_php_fpm_conf: '/etc/opt/remi/php72/php-fpm.conf'
 php72_def_pool_conf: '{{ php72_pool_d_dir }}www.conf'
 php72_error_log_dir: '/var/log/php72/'
 php72_error_log: '{{ php72_error_log_dir }}php72-php-fpm.log'
+php72_wpsite_error_log: '{{ web_username_home_dir }}/logs/php72-php-fpm_error.log'
 php72_ini_file: '/etc/opt/remi/php72/php.ini'
 
 yum_php72:
@@ -73,7 +76,7 @@ yum_php72:
 
 
 # wordpress role
-yum_packs:
+yum_packs_wp:
   - wordpress
 
 nginx_vhost_wpsite: '/etc/nginx/conf.d/danielmacuare.conf'
@@ -83,14 +86,15 @@ nginx_vhost_wpsite: '/etc/nginx/conf.d/danielmacuare.conf'
 domain_name: 'danielmacuare.com'
 web_username: 'danielmacuare'
 web_group: 'danielmacuare'
-web_username_logs_dir: '/home/{{ web_username }}/logs/'
-web_username_web_dir: '/home/{{ web_username }}/public_html/'
+web_username_home_dir: '/home/{{ web_username }}'
+web_username_logs_dir: '{{ web_username_home_dir }}/logs/'
+web_username_web_dir: '{{ web_username_home_dir }}/public_html/'
 php72_socket_file: 'danielmacuare.sock'
 php72_socket_dir: '/var/run/php72-fpm/'
 php72_pool_d_dir: '/etc/opt/remi/php72/fpm/pool.d/'
 php72_nginx_user: "nginx"
 php72_nginx_group: "nginx"
-wordpress_documentroot: '{{ web_username_web_dir }}blog/'
+wordpress_documentroot: '{{ web_username_web_dir }}blog'
 
 
 

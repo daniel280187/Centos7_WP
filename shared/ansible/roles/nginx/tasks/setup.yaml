@@ -1,4 +1,12 @@
 ---
+- name: "ADDING - The Blog's system user: '{{ web_username }} to the \"{{ php72_nginx_group }}\" group'"
+  user:
+    name: '{{ web_username }}'
+    groups: '{{ php72_nginx_group }}'
+    shell: '/bin/bash'
+    append: True
+
+
 - name: 'VALIDATING - NGINX Cache_dir: {{ nginx_cache_dir }} exists'
   become: True
   file:
@@ -7,8 +15,6 @@
     owner: 'root'
     group: 'root'
     mode: 0755
-
-
 
 
 - name: 'CREATING - NGINX Config file: "{{ nginx_config }}" + Backup + Validation'

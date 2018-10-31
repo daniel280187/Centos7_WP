@@ -1,11 +1,11 @@
 ---
-- name: 'ENABLING - NGINX'
+- name: 'ENABLING - PHP 7.2'
   become: yes
   service:
     name: 'php72-php-fpm'
     enabled: yes
 
-- name: 'STARTING - NGINX'
+- name: 'STARTING - PHP 7.2'
   become: yes
   service:
     name: 'php72-php-fpm'
