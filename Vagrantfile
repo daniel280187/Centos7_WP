@@ -49,8 +49,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "./shared/ansible", "/vagrant_data/ansible"
   
-  # The wordpress_dev user key to be accepted on the server
-
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
@@ -61,10 +59,9 @@ Vagrant.configure("2") do |config|
   # end
   #   apt-get update
   #   apt-get install -y apache2
-  # SHELL
-  # TEST COMMENT
-  # Daniel 2
+  #
   # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+
   config.vm.provision :shell, :path => "provisioning.sh"
   # provisioner = Vagrant::Util::Platform.windows? ? :guest_ansible : :ansible
   # config.vm.define "web" do |web|
