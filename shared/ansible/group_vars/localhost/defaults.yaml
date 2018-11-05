@@ -1,5 +1,5 @@
 ---
-# Base Role
+# BASE ROLE
 auth_key_dir: "/etc/ssh/authorized_keys"
 
 users:
@@ -11,7 +11,6 @@ users:
 
 
 yum_base:
-    - epel-release
     - tree
     - htop
     - tcpdump
@@ -20,7 +19,7 @@ yum_base:
     - unzip
 
 
-# nginx role
+# NGINX ROLE
 yum_nginx:
     - nginx
 
@@ -44,8 +43,7 @@ nginx_server_https_ipv4_listen: "*:443 ssl http2"
 nginx_server_https_ipv6_listen: "[::]:443 ssl http2"
 
 
-
-# php7 role
+# PHP7.2 ROLE
 php72_php_fpm_conf: '/etc/opt/remi/php72/php-fpm.conf'
 php72_def_pool_conf: '{{ php72_pool_d_dir }}www.conf'
 php72_error_log_dir: '/var/log/php72/'
@@ -75,30 +73,31 @@ yum_php72:
   - php72-php-xmlrpc.x86_64 
 
 
-# wordpress role
+# WORDPRESS ROLE
 yum_packs_wp:
   - wordpress
 
 nginx_vhost_wpsite: '/etc/nginx/conf.d/danielmacuare.conf'
 
 
-# shared vars
+# SHARED VARS
 domain_name: 'danielmacuare.com'
 web_username: 'danielmacuare'
 web_group: 'danielmacuare'
+
 web_username_home_dir: '/home/{{ web_username }}'
 web_username_logs_dir: '{{ web_username_home_dir }}/logs/'
 web_username_web_dir: '{{ web_username_home_dir }}/public_html/'
-php72_socket_file: 'danielmacuare.sock'
+
 php72_socket_dir: '/var/run/php72-fpm/'
+php72_socket_file: 'danielmacuare.sock'
 php72_pool_d_dir: '/etc/opt/remi/php72/fpm/pool.d/'
 php72_nginx_user: "nginx"
 php72_nginx_group: "nginx"
+
 wordpress_documentroot: '{{ web_username_web_dir }}blog'
 
-
-
-# mariadb Role
+# MARIADB ROLE
 mariadb_packages:
   - MariaDB
   - MariaDB-server
@@ -163,7 +162,6 @@ mariadb_innodb_file_per_table: 'ON'
 mariadb_innodb_flush_log_at_trx_commit: 1
 mariadb_innodb_log_buffer_size: '16M'
 mariadb_innodb_log_file_size: '48M'
-
 
 mariadb_max_connect_errors: 10
 mariadb_sysdate_is_now: 1
