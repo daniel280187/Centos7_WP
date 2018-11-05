@@ -1,12 +1,33 @@
 # Wordpress Dev - Centos7   (Readme in Progress)
 
-The purpose of this project is to have a consistent environemnt to develop a wordpress site. If you are starting with Wordpress this will help you to get up and running quickly.
+The purpose of this project is to have a consistent environemnt to develop a Wordpress site. If you are starting with Wordpress this will help you to get up and running quickly.
 
-The project uses Ansible to provision the server and you can customise the YUM packages you want to add to the box by simply editing the [Host vars](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/host_vars/127.0.0.1.yaml)
+The project uses Vagrant with a basic shell script to install Ansible.After Ansible is installed, the main chunk of the Wordpress server is installed and configured by the following 5 roles:  
+1. [base](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/)
+2. [mariadb](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/)
+3. [nginx](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/nginx/)
+4. [php7](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/php7/)
+5. [wordpress](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/wordpress/)
 
 ## Getting Started
+1. Shell script customisation  
+The [provisioning script](https://github.com/danielmacuare/Centos7_WP/blob/master/provisioning.sh) installs some base packages and repos like:  
+- Python3.6  
+- Virtualenv  
+- Ansible (I'm currently using ANSIBLE_TAG="v2.7.0")  
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+2. Ansible customisation  
+You can customise your server by simply editing the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)
+
+2.1. To add users to the server:  
+Add its public key here user's public keys in the [base role] 
+(https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/files/127.0.0.1.yaml)
+
+Edit the following file to tell the base role where to look for the users's public key. 
+
+
+
+To customize your environment you can edit the
 
 ### Prerequisites
 
