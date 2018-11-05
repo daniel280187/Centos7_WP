@@ -1,7 +1,0 @@
----
-- name: Restart Apache
-  become: yes
-  service:
-    name: httpd
-    state: restarted
-  listen: "restart httpd"
