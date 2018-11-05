@@ -4,7 +4,7 @@ The purpose of this project is to have a consistent environemnt to develop a Wor
 
 The project uses Vagrant with a basic shell script to install Ansible.After Ansible is installed, the main chunk of the Wordpress server is installed and configured by the following 5 roles:  
 1. [base](blob/master/shared/ansible/roles/base/)
-2. [mariadb](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/)
+2. [mariadb](https://github.com/bertvv/ansible-role-mariadb/) --> Thanks to te creators of [ansible-role-mariadb](https://github.com/bertvv/ansible-role-mariadb/) as this role was heavily based on it with just some small modifications.
 3. [nginx](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/nginx/)
 4. [php7](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/php7/)
 5. [wordpress](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/wordpress/)
@@ -20,9 +20,10 @@ The [provisioning script](https://github.com/danielmacuare/Centos7_WP/blob/maste
 You can customise your server by simply editing the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)
 
 - To add users to the server:  
-Add its public key here user's public keys in the [base/files](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/files/). In this example we will add /base/files/**example.pub**
 
-   Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml) file to tell the base role where to look for the users's public key. Notice that the username and the name of the public key must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"**
+   - Add the users' public keys in the [base/files](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/files/) dir. In this example we will add /base/files/**example.pub**
+
+   - Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml) to add the user.username and to tell the base role where to look for the users's public key. Notice that the username **'example'** and the name of the public key **'example.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
 
 ```yaml
 # BASE ROLE
@@ -39,22 +40,15 @@ users:
 
 ### Prerequisites
 
+[Vagrant](https://www.vagrantup.com/downloads.html)  
+[Virtualbox](https://www.virtualbox.org/wiki/Downloads)  
 
-
-```
-[Vagrant](https://www.vagrantup.com/downloads.html)
-[Virtualbox](https://www.virtualbox.org/wiki/Downloads)
-```
 
 ### Installing
 
-
-
 ```
 git clone https://github.com/daniel280187/Centos7_WP.git
-If you are going to add ssh keys for an user:
-    Put your Public key in shared/ansible/roles/base/files
-    SSH Keys will be added to the 'auth_key_dir' defined in shared/ansible/roles/base/vars/main.yaml
+
 ```
 
 And repeat
