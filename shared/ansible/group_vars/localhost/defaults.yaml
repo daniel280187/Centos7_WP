@@ -1,0 +1,179 @@
+---
+# BASE ROLE
+auth_key_dir: "/etc/ssh/authorized_keys"
+web_username_pass_hash: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
+
+users:
+  - username: wordpress_dev
+    use_sudo: true
+    ssh_access: true
+    ssh_pub_key: "{{ lookup('file', 'wordpress_dev.pub' ) }}"
+  - username: vagrant
+
+
+yum_base:
+    - tree
+    - htop
+    - tcpdump
+    - traceroute
+    - wget
+    - unzip
+
+
+# NGINX ROLE
+yum_nginx:
+    - nginx
+
+nginx_config: "/etc/nginx/nginx.conf"
+nginx_user: "nginx"
+nginx_errorlog: "/var/log/nginx/error_log"
+nginx_accesslog: "/var/log/nginx/access_log"
+nginx_wpsite_error_log: '{{ web_username_home_dir }}/logs/nginx_error.log'
+nginx_wpsite_access_log: '{{ web_username_home_dir }}/logs/nginx_access.log'
+nginx_enable_gzip: True
+nginx_cache_dir: '/usr/share/nginx/cache/fcgi'
+
+nginx_server_http_ipv4_listen: "*:80 default_server"
+nginx_server_http_ipv6_listen: "[::]:80 default_server"
+
+nginx_server_root: "/usr/share/nginx/html"
+
+nginx_enable_ssl: True
+# The following block needs to be defined if nginx_enable_ssl: True
+nginx_server_https_ipv4_listen: "*:443 ssl http2"
+nginx_server_https_ipv6_listen: "[::]:443 ssl http2"
+
+
+# PHP7.2 ROLE
+php72_php_fpm_conf: '/etc/opt/remi/php72/php-fpm.conf'
+php72_def_pool_conf: '{{ php72_pool_d_dir }}www.conf'
+php72_error_log_dir: '/var/log/php72/'
+php72_error_log: '{{ php72_error_log_dir }}php72-php-fpm.log'
+php72_wpsite_error_log: '{{ web_username_home_dir }}/logs/php72-php-fpm_error.log'
+php72_ini_file: '/etc/opt/remi/php72/php.ini'
+
+yum_php72:
+  - php72
+  - php72-php-fpm
+  - php72-php-opcache.x86_64
+  - php72-php-pecl-apcu.x86_64
+  - php72-php-cli.x86_64
+  - php72-php-pear.noarch
+  - php72-php-pdo.x86_64
+  - php72-php-mysqlnd.x86_64
+  - php72-php-pgsql.x86_64
+  - php72-php-pecl-mongodb.x86_64
+  - php72-php-phpiredis.x86_64
+  - php72-php-pecl-memcache.x86_64
+  - php72-php-pecl-memcached.x86_64
+  - php72-php-gd.x86_64
+  - php72-php-mbstring.x86_64
+  - php72-php-pecl-mcrypt.x86_64
+  - php72-php-xml.x86_64
+  - php72-php-pecl-zip.x86_64
+  - php72-php-xmlrpc.x86_64 
+
+
+# WORDPRESS ROLE
+yum_packs_wp:
+  - wordpress
+
+nginx_vhost_wpsite: '/etc/nginx/conf.d/danielmacuare.conf'
+
+
+# SHARED VARS
+domain_name: 'danielmacuare.com'
+web_username: 'danielmacuare'
+web_group: 'danielmacuare'
+
+web_username_home_dir: '/home/{{ web_username }}'
+web_username_logs_dir: '{{ web_username_home_dir }}/logs/'
+web_username_web_dir: '{{ web_username_home_dir }}/public_html/'
+
+php72_socket_dir: '/var/run/php72-fpm/'
+php72_socket_file: 'danielmacuare.sock'
+php72_pool_d_dir: '/etc/opt/remi/php72/fpm/pool.d/'
+php72_nginx_user: "nginx"
+php72_nginx_group: "nginx"
+
+wordpress_documentroot: '{{ web_username_web_dir }}blog'
+
+# MARIADB ROLE
+mariadb_packages:
+  - MariaDB
+  - MariaDB-server
+  - MySQL-python
+
+mariadb_service: mariadb
+mariadb_socket: /var/lib/mysql/mysql.sock
+
+mariadb_config_network: /etc/my.cnf.d/network.cnf
+mariadb_config_server: /etc/my.cnf.d/server.cnf
+mariadb_config_custom: /etc/my.cnf.d/custom.cnf
+
+mariadb_databases:
+  - name: "{{ web_username }}"
+
+mariadb_users:
+  - name: "{{ web_username }}"
+    password: "{{ vault_mariadb_web_username_pass }}"
+    priv: "{{ web_username }}.*:ALL,GRANT"
+
+mariadb_root_password: "{{ vault_mariadb_root_pass }}"
+
+mariadb_version: '10.3'
+
+mariadb_configure_swappiness: true
+mariadb_swappiness: 0
+
+mariadb_character_set_server: utf8
+mariadb_collation_server: utf8_general_ci
+
+# Network configuration (network.cnf)
+mariadb_bind_address: '0.0.0.0'
+
+# Server configuration (server.cnf)
+mariadb_port: 3306
+mariadb_skip_name_resolve: 1
+
+mariadb_log_warnings: '1'
+mariadb_slow_query_log: '0'
+mariadb_long_query_time: '10'
+
+mariadb_max_connections: 505
+mariadb_max_user_connections: 500
+mariadb_max_allowed_packet: '16M'
+mariadb_max_heap_table_size: '16M'
+ansible_wait_timeout: 60
+
+mariadb_query_cache_size: 0
+mariadb_sort_buffer_size: '2M'
+mariadb_tmp_table_size: '16M'
+mariadb_read_buffer_size: '128k'
+mariadb_read_rnd_buffer_size: '256k'
+mariadb_join_buffer_size: '128k'
+mariadb_table_definition_cache: '1400'
+mariadb_table_open_cache: '2000'
+mariadb_table_open_cache_instances: '8'
+
+mariadb_innodb_strict_mode: 'ON'
+mariadb_innodb_buffer_pool_size: '384M'
+mariadb_innodb_buffer_pool_instances: 8
+mariadb_innodb_file_per_table: 'ON'
+mariadb_innodb_flush_log_at_trx_commit: 1
+mariadb_innodb_log_buffer_size: '16M'
+mariadb_innodb_log_file_size: '48M'
+
+mariadb_max_connect_errors: 10
+mariadb_sysdate_is_now: 1
+mariadb_logs_days: 10
+mariadb_expire_logs_days: 10
+mariadb_sync_binlog: 1
+mariadb_query_cache_type: 0
+mariadb_thread_cache_size: 50
+mariadb_open_files_limit: '65353'
+mariadb_innodb_flush_method: 'O_DIRECT'
+mariadb_innodb_log_files_in_group: 2
+mariadb_innodb_buffer_pool_load_at_startup: 'ON'
+
+mariadb_custom_cnf: {}

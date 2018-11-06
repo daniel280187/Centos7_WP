@@ -1,0 +1,11 @@
+---
+- name: CENTOS 7 INITIAL PROVISIONING
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - base
+    - mariadb
+    - nginx
+    - php7
+    - wordpress

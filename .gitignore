@@ -1,0 +1,4 @@
+.vagrant/
+shared/ssh/wordpress_dev.pub
+shared/ansible/roles/base/files/vagrant.pub
+.vault_pass

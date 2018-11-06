@@ -1,0 +1,13 @@
+---
+- name: 'ENABLING - NGINX'
+  become: yes
+  service:
+    name: nginx
+    enabled: yes
+
+- name: 'STARTING - NGINX'
+  become: yes
+  service:
+    name: nginx
+    state: started
+

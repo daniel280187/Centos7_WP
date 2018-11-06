@@ -1,0 +1,94 @@
+---
+- name: 'VALIDATING - Making sure we have a "wheel" group'
+  become: yes
+  group:
+    name: wheel
+    state: present
+
+- name: 'VALIDATING - Wheel Group - Passwordless sudo'
+  become: yes
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  when: "item.use_sudo is defined and item.use_sudo == true"
+  loop: "{{ users }}"
+
+- name: 'CREATING - Sudo Users'
+  user:
+    name: "{{ item.username }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
+  when: "item.use_sudo is defined and item.use_sudo == true"
+  loop: "{{ users }}"
+
+
+- name: 'CREATING - Non-sudo users'
+  user:
+    name: "{{ item.username }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
+  when: "item.use_sudo is defined and item.use_sudo == false"
+  loop: "{{ users }}"
+
+
+- name: "CREATING - The Blog's system user: {{ web_username }} at /home/{{web_username }}/"
+  user:
+    name: '{{ web_username }}'
+    comment: 'System user for the blog'
+    create_home: True
+    system: True
+    password: '{{ web_username_pass_hash }}'
+    shell: '/bin/bash'
+    state: 'present'
+
+
+- name: "CREATING - The Blog's system user dirs"
+  become: True
+  file:
+    path: '{{ item }}'
+    owner: '{{ web_username }}'
+    #group: '{{ web_group }}'
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ web_username_logs_dir }}"
+    - "{{ web_username_web_dir }}"
+
+
+- name: "VALIDATING - Auth Key Dir is created"
+  become: yes
+  file:
+    state: directory
+    path: "{{ auth_key_dir }}/"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "MOVING - Users' keys to {{ auth_key_dir }}"
+  become: yes
+  copy:
+    src: 'roles/base/files/{{ item.username }}.pub'
+    dest: "{{ auth_key_dir }}/"
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ users }}"
+
+- name: CREATING - SSHD Config file
+  become: yes
+  template:
+    src: roles/base/templates/sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - "restart sshd"

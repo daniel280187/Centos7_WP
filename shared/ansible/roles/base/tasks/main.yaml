@@ -1,0 +1,13 @@
+---
+- include_tasks: user_creation.yaml
+  when: "users is defined"
+
+- include_tasks: yum_p.yaml
+
+- include_tasks: services.yaml
+
+#- include_tasks: st_services.yaml
+#  when: "start_services is defined"
+
+#- include_tasks: en_services.yaml
+#  when: "enable_services is defined"

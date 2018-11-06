@@ -1,0 +1,6 @@
+---
+- name: 'INSTALLING -  Wordpress Yum Package'
+  become: yes
+  yum:
+    name: "{{ yum_packs_wp }}"
+    state: present

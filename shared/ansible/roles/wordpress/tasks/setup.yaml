@@ -1,0 +1,51 @@
+---
+- name: 'CREATING - Blog directory at "/www/var/html/blog"'
+  become: yes
+  file:
+    path: "/www/var/html/blog"
+    state: directory
+
+
+- name: 'VALIDATING - Wordpress Dir: "/usr/share/wordpress/" exists"'
+  stat:
+    path: '/usr/share/wordpress'
+  register: wp_default_dir
+
+
+- name: 'COPYING - (Only if wordpress_dir exists)  Wordpress Dir: "/usr/share/wordpress/" --> "{{ wordpress_documentroot }}/"'
+  become: yes
+  command: "cp -ar /usr/share/wordpress/ {{ wordpress_documentroot }}/"
+  when: wp_default_dir.stat.exists and wp_default_dir.stat.isdir
+
+
+- name: 'REMOVING - Original Wordpress Dir at "/usr/share/wordpress/"'
+  become: yes
+  file:
+    state: absent
+    path: "/usr/share/wordpress/"
+
+
+- name: 'CREATING - NGINX vhost config file at "{{ nginx_vhost_wpsite }}"'
+  template:
+    src: 'ngninx_vhost.j2'
+    dest: '{{ nginx_vhost_wpsite }}'
+    owner: root
+    group: root
+    mode: 0644
+    backup: True
+  notify: 'restart nginx'
+
+
+- name: 'ADJUSTING - Permissions: 755 for folders (recursive) from /home/danielmacuare'
+  shell: 'find /home/danielmacuare -type d -print0 | xargs -0 chmod 755'
+  args:
+    executable: '/bin/bash'
+  become: True
+
+
+
+- name: 'ADJUSTING - Permissions: 644 for files (recursive) from /home/danielmacuare'
+  shell: 'find /home/danielmacuare -type f -print0 | xargs -0 chmod 644'
+  args:
+    executable: '/bin/bash'
+  become: True

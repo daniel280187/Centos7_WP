@@ -1,0 +1,6 @@
+---
+- include_tasks: yum_p.yaml
+
+- include_tasks: services.yaml
+
+- include_tasks: setup.yaml
