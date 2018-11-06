@@ -1,8 +1,8 @@
-# Wordpress Dev - Centos7   (Readme in Progress)
+# Wordpress Dev - Centos7   
 
 The purpose of this project is to have a consistent environemnt to develop a Wordpress site. If you are starting with Wordpress this will help you to get up and running quickly.
 
-The project uses Vagrant with a basic shell script to install Ansible.After Ansible is installed, the main chunk of the Wordpress server is installed and configured by the following 5 roles:  
+The project uses Vagrant with a basic shell script to install Ansible. After Ansible is installed, the main chunk of the Wordpress server is installed and configured by the following 5 roles:  
 1. [base](blob/master/shared/ansible/roles/base/)
 2. [mariadb](https://github.com/bertvv/ansible-role-mariadb/) --> Thanks to te creators of [ansible-role-mariadb](https://github.com/bertvv/ansible-role-mariadb/) as this role was heavily based on it with just some small modifications.
 3. [nginx](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/nginx/)
@@ -19,24 +19,6 @@ The [provisioning script](https://github.com/danielmacuare/Centos7_WP/blob/maste
 2. **Ansible customisation**    
 You can customise your server by simply editing the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)
 
-- To add users to the server:  
-
-   - Add the users' public keys in the [base/files](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/files/) dir. In this example we will add /base/files/**example.pub**
-
-   - Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml) to add the user.username and to tell the base role where to look for the users's public key. Notice that the username **'example'** and the name of the public key **'example.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
-
-```yaml
-# BASE ROLE
-auth_key_dir: "/etc/ssh/authorized_keys"
-
-users:
-  - username: example
-    use_sudo: true
-    ssh_access: true
-    ssh_pub_key: "{{ lookup('file', 'example.pub' ) }}"
-  - username: vagrant
-```
-
 
 ### Prerequisites
 
@@ -45,65 +27,79 @@ users:
 
 
 ### Installing
-
+1. Clone the repo
 ```
 git clone https://github.com/daniel280187/Centos7_WP.git
 
 ```
 
-And repeat
+2. (Optional) - Modify your Vagrantfile. The file exposes 8080 on your host an redirects all requests on this port to port 80 in the guest host.
 
+3. Create a vault file to securely store your [mariadb credentials](https://github.com/danielmacuare/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/mariadb_credentials.yaml)  
+   Example: 
 ```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+ansible-vault create group_vars/localhost/mariadb_credentials.yaml 
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+```yaml
+---
+vault_mariadb_web_username_pass: 123
+vault_mariadb_root_pass: 123
 ```
 
-## Deployment
+4. Generate a strong password hash for the web_username. This is going to be the user you will use to run your wordpress server.
+```
+pip3.6 install passlib
+python -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
+Password:
+$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0
+```
 
-Add additional notes about how to deploy this on a live system
+5. Then assign the value of the last line to your `web_username_pass_hash` variable at [Default_vars](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)
+```
+auth_key_dir: "/etc/ssh/authorized_keys"
+web_username_pass_hash: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
+```
 
-## Built With
+6. Create a sudo user to manage your server. For security, you will only be able to access the server by using SSH keys, not passwords, so let's generate a pair of keys:  
+**Important: The name of the key and the username must match, so if your sudo user is going to be called "wordpress_dev", then create keys with the same name**
+
+```bash
+ssh-keygen -f wordpress_dev -C "User to manage your Wordpress site"
+```
+
+7. Add the sudo user's public key in the [base/files](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/files/) dir. In this example we will add /base/files/**wordpress_dev.pub**
+
+8. Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)  "user.username" and "user.ssh_pub_key" vars to tell the base role where to look for the users's public key. Again, notice that the username **'wordpress'** and the name of the public key **'wordpress_dev.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
+
+```yaml
+# BASE ROLE
+auth_key_dir: "/etc/ssh/authorized_keys"
+web_username_pass_hash: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
+
+users:
+  - username: wordpress_dev
+    use_sudo: true
+    ssh_access: true
+    ssh_pub_key: "{{ lookup('file', 'wordpress_dev.pub' ) }}"
+  - username: vagrant
+```
+
+9. To finish the setup, just:
+`vagrant up`
 
 
+**And have fun creating your Wordpress site!!!**
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Daniel Macuare** - *Initial work* - [Daniel Macuare](https://github.com/danielmacuare)
 
 ## License
 
@@ -111,6 +107,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Thanks to the team who developed the [ansible-role-mariadb](https://github.com/bertvv/ansible-role-mariadb/) as it was barely modified to customise it to this project.
