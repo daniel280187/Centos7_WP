@@ -44,7 +44,7 @@
     comment: 'System user for the blog'
     create_home: True
     system: True
-    password: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
+    password: '{{ web_username_pass_hash }}'
     shell: '/bin/bash'
     state: 'present'
 
