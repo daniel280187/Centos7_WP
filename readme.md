@@ -1,13 +1,13 @@
-# Wordpress Dev - Centos7   
+# Wordpress Dev - Centos7 (Vagrant + Shell + Ansible) (Work In Progress)
 
 The purpose of this project is to have a consistent environemnt to develop a Wordpress site. If you are starting with Wordpress this will help you to get up and running quickly.
 
 The project uses Vagrant with a basic shell script to install Ansible. After Ansible is installed, the main chunk of the Wordpress server is installed and configured by the following 5 roles:  
-1. [base](blob/master/shared/ansible/roles/base/)
+1. [base](shared/ansible/roles/base/)
 2. [mariadb](https://github.com/bertvv/ansible-role-mariadb/) --> Thanks to te creators of [ansible-role-mariadb](https://github.com/bertvv/ansible-role-mariadb/) as this role was heavily based on it with just some small modifications.
-3. [nginx](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/nginx/)
-4. [php7](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/php7/)
-5. [wordpress](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/wordpress/)
+3. [nginx](shared/ansible/roles/nginx/)
+4. [php7](shared/ansible/roles/php7/)
+5. [wordpress](shared/ansible/roles/wordpress/)
 
 ## Getting Started
 1. **Shell script customisation**   
@@ -22,18 +22,17 @@ You can customise your server by simply editing the [Defaults var](https://githu
 
 ### Prerequisites
 
-[Vagrant](https://www.vagrantup.com/downloads.html)  
-[Virtualbox](https://www.virtualbox.org/wiki/Downloads)  
+- [Vagrant](https://www.vagrantup.com/downloads.html)  
+- [Virtualbox](https://www.virtualbox.org/wiki/Downloads)  
 
 
 ### Installing
 1. Clone the repo
 ```
 git clone https://github.com/daniel280187/Centos7_WP.git
-
 ```
 
-2. (Optional) - Modify your Vagrantfile. The file exposes 8080 on your host an redirects all requests on this port to port 80 in the guest host.
+2. (Optional) - Modify your [Vagrantfile](Vagrantfile). The file exposes the port 8080 on your host an redirects all requests on this port to port 80 in the guest host.
 
 3. Create a vault file to securely store your [mariadb credentials](https://github.com/danielmacuare/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/mariadb_credentials.yaml)  
    Example: 
@@ -47,7 +46,7 @@ vault_mariadb_web_username_pass: 123
 vault_mariadb_root_pass: 123
 ```
 
-4. Generate a strong password hash for the web_username. This is going to be the user you will use to run your wordpress server.
+4. Generate a strong password hash for the web_username. This is going to be the account you will use to run your wordpress server.
 ```
 pip3.6 install passlib
 python -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
@@ -85,16 +84,10 @@ users:
   - username: vagrant
 ```
 
-9. To finish the setup, just:
+9. To finish the setup, just:  
 `vagrant up`
 
-
 **And have fun creating your Wordpress site!!!**
-
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
 ## Authors
