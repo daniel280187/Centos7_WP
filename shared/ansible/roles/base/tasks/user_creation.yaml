@@ -62,7 +62,7 @@
     - "{{ web_username_web_dir }}"
 
 
-- name: "VALIDATING - Auth Key Dir is created"
+- name: "VALIDATING - Auth Key Dir:\"{{ auth_key_dir }}\"  is created"
   become: yes
   file:
     state: directory
