@@ -35,18 +35,19 @@ git clone https://github.com/daniel280187/Centos7_WP.git
 2. (Optional) - Modify your [Vagrantfile](Vagrantfile). The file exposes the port 8080 on your host an redirects all requests on this port to port 80 in the guest host.
 
 
-3. Create a .vault_pass file at shared/ansible/.vault_pass. This password will be used to encrypt/decrypt the files that we instantiate with ansible-vault. Additionally, Ansible will use this file to decrypt it's secrets and read the file in point 4. So imagine, you want to make your password 'blogpass' (I encourage you to use strong passwords instead) 
+3. (Optional) Create a new .vault_pass file at shared/ansible/.vault_pass. This password will be used to encrypt/decrypt the files that we instantiate with ansible-vault. Additionally, Ansible will use this file to decrypt it's secrets and read the file in point 4. So imagine, you want to make your password 'blogpass' (I encourage you to use strong passwords instead)  
 
 ```
 echo blogpass > shared/ansible/.vault_pass
 ```
 
-4. Create a vault file to securely store your [mariadb credentials](https://github.com/danielmacuare/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/mariadb_credentials.yaml)  
+4. (Optional) Create a vault file to securely store your [mariadb credentials](https://github.com/danielmacuare/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/mariadb_credentials.yaml)  
    Example: 
 ```
-ansible-vault create group_vars/localhost/mariadb_credentials.yaml 
+ansible-vault create shared/ansible/group_vars/localhost/mariadb_credentials.yaml 
 ```
 
+Default values if you want to leave it like this:  
 ```yaml
 ---
 vault_mariadb_web_username_pass: 123
@@ -68,18 +69,19 @@ web_username_pass_hash: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KD
 ```
 
 7. Create a sudo user to manage your server. For security, you will only be able to access the server by using SSH keys, not passwords, so let's generate a pair of keys:  
-**Important: The name of the key and the username must match, so if your sudo user is going to be called "wordpress_dev", then create keys with the same name**
+**Important: The name of the key and the username must match, so if your sudo user is going to be called "wordpress_dev", then create keys with the same name**  
 
 ```bash
-ssh-keygen -f wordpress_dev -C "User to manage your Wordpress site"
+ssh-keygen -f  ~/.ssh/wordpress_dev -C "User's key to manage my Wordpress site"
 
+cp ~/.ssh/wordpress_dev.pub shared/ansible/roles/base/files
 ```
 
-8. Add the sudo user's public key in the [base/files](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/roles/base/files/) dir. In this example we will add /base/files/**wordpress_dev.pub**
-
-9. Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)  "user.username" and "user.ssh_pub_key" vars to tell the base role where to look for the users's public key. Again, notice that the username **'wordpress'** and the name of the public key **'wordpress_dev.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
+8. Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)  "user.username" and "user.ssh_pub_key" vars to tell the base role where to look for the users's public key. Again, notice that the username **'wordpress'** and the name of the public key **'wordpress_dev.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
 
 ```yaml
+vim shared/ansible/group_vars/localhost/defaults.yaml
+
 # BASE ROLE
 auth_key_dir: "/etc/ssh/authorized_keys"
 web_username_pass_hash: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
@@ -92,7 +94,7 @@ users:
   - username: vagrant
 ```
 
-10. To finish the setup, just:  
+9. To finish the setup, just:  
 `vagrant up`
 
 **And have fun creating your Wordpress site!!!**
