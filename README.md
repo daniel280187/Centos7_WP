@@ -9,6 +9,8 @@ The project uses Vagrant with a basic shell script to install Ansible. After Ans
 4. [php7](shared/ansible/roles/php7/)
 5. [wordpress](shared/ansible/roles/wordpress/)
 
+**For more information you can see a mind map [here](shared/ansible/Wordpress_ansible.pdf) with information about the provisioning process.**
+
 ## Getting Started
 1. **Shell script customisation**   
 The [provisioning script](https://github.com/danielmacuare/Centos7_WP/blob/master/provisioning.sh) installs some base packages and repos like:  
