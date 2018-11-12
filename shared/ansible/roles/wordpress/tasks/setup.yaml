@@ -43,9 +43,16 @@
   become: True
 
 
-
 - name: 'ADJUSTING - Permissions: 644 for files (recursive) from /home/danielmacuare'
   shell: 'find /home/danielmacuare -type f -print0 | xargs -0 chmod 644'
   args:
     executable: '/bin/bash'
   become: True
+
+
+- name: 'ADJUSTING - Ownership of the folder {{ web_username_home_dir }} to {{ web_username }}:{{ php72_nginx_group }}' 
+  file:
+    path: '{{ web_username_home_dir }}'
+    owner: '{{ web_username }}'
+    group: '{{ php72_nginx_group }}'
+    recurse: True
