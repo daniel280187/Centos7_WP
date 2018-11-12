@@ -31,30 +31,7 @@ You can customise your server by simply editing the [Defaults var](https://githu
 ```
 git clone https://github.com/daniel280187/Centos7_WP.git
 ```
-
-2. (Optional) - Modify your [Vagrantfile](Vagrantfile). The file exposes the port 8080 on your host an redirects all requests on this port to port 80 in the guest host.
-
-
-3. (Optional) Create a new .vault_pass file at shared/ansible/.vault_pass. This password will be used to encrypt/decrypt the files that we instantiate with ansible-vault. Additionally, Ansible will use this file to decrypt it's secrets and read the file in point 4. So imagine, you want to make your password 'blogpass' (I encourage you to use strong passwords instead)  
-
-```
-echo blogpass > shared/ansible/.vault_pass
-```
-
-4. (Optional) Create a vault file to securely store your [mariadb credentials](https://github.com/danielmacuare/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/mariadb_credentials.yaml)  
-   Example: 
-```
-ansible-vault create shared/ansible/group_vars/localhost/mariadb_credentials.yaml 
-```
-
-Default values if you want to leave it like this:  
-```yaml
----
-vault_mariadb_web_username_pass: 123
-vault_mariadb_root_pass: 123
-```
-
-5. Generate a strong password hash for the web_username. This is going to be the account you will use to run your wordpress server.
+2. Generate a strong password hash for the web_username. This is going to be the account you will use to run your wordpress server.
 ```
 pip3.6 install passlib
 python -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
@@ -62,13 +39,13 @@ Password:
 $6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0
 ```
 
-6. Then assign the value of the last line to your `web_username_pass_hash` variable at [Default_vars](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)
+3. Then assign the value of the last line to your `web_username_pass_hash` variable at [Default_vars](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)
 ```
 auth_key_dir: "/etc/ssh/authorized_keys"
 web_username_pass_hash: '$6$DQVUMUtOcuMiWRQA$/IYkXB3UqMKgJn2gXW6OuZqiN7BjrQ.48KDRzSfCEf1z1jS5suYYOayX7Twu/ybQB1Zwnagacf2Ps2/pQmeOl0'
 ```
 
-7. Create a sudo user to manage your server. For security, you will only be able to access the server by using SSH keys, not passwords, so let's generate a pair of keys:  
+4. Create a sudo user to manage your server. For security, you will only be able to access the server by using SSH keys, not passwords, so let's generate a pair of keys:  
 **Important: The name of the key and the username must match, so if your sudo user is going to be called "wordpress_dev", then create keys with the same name**  
 
 ```bash
@@ -77,7 +54,7 @@ ssh-keygen -f  ~/.ssh/wordpress_dev -C "User's key to manage my Wordpress site"
 cp ~/.ssh/wordpress_dev.pub shared/ansible/roles/base/files
 ```
 
-8. Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)  "user.username" and "user.ssh_pub_key" vars to tell the base role where to look for the users's public key. Again, notice that the username **'wordpress'** and the name of the public key **'wordpress_dev.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
+5. Edit the [Defaults var](https://github.com/daniel280187/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/defaults.yaml)  "user.username" and "user.ssh_pub_key" vars to tell the base role where to look for the users's public key. Again, notice that the username **'wordpress'** and the name of the public key **'wordpress_dev.pub'** must match because Ansible will then move that key to **auth_key_dir: "/etc/ssh/authorized_keys"** based on that match.
 
 ```yaml
 vim shared/ansible/group_vars/localhost/defaults.yaml
@@ -91,7 +68,28 @@ users:
     use_sudo: true
     ssh_access: true
     ssh_pub_key: "{{ lookup('file', 'wordpress_dev.pub' ) }}"
-  - username: vagrant
+```
+
+6. (Optional) - Modify your [Vagrantfile](Vagrantfile). The file exposes the port 8080 on your host an redirects all requests on this port to port 80 in the guest host.
+
+
+7. (Optional) Create a new .vault_pass file at shared/ansible/.vault_pass. This password will be used to encrypt/decrypt the files that we instantiate with ansible-vault. Additionally, Ansible will use this file to decrypt it's secrets and read the file in point 4. So imagine, you want to make your password 'blogpass' (I encourage you to use strong passwords instead)  
+
+```
+echo blogpass > shared/ansible/.vault_pass
+```
+
+8. (Optional) Create a vault file to securely store your [mariadb credentials](https://github.com/danielmacuare/Centos7_WP/blob/master/shared/ansible/group_vars/localhost/mariadb_credentials.yaml)  
+   Example: 
+```
+ansible-vault create shared/ansible/group_vars/localhost/mariadb_credentials.yaml 
+```
+
+Default values if you want to leave it like this:  
+```yaml
+---
+vault_mariadb_web_username_pass: 123
+vault_mariadb_root_pass: 123
 ```
 
 9. To finish the setup, just:  
