@@ -25,6 +25,13 @@
     path: "/usr/share/wordpress/"
 
 
+- name: 'REMOVING - Default Wordpress config file at "{{ wordpress_documentroot }}/wp-config.php"'
+  become: yes
+  file:
+    state: absent
+    path: "{{ wordpress_documentroot }}/wp-config.php"
+
+
 - name: 'CREATING - NGINX vhost config file at "{{ nginx_vhost_wpsite }}"'
   template:
     src: 'ngninx_vhost.j2'
