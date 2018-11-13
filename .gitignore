@@ -1,6 +1,5 @@
 .vagrant/
 shared/ansible/roles/base/files/*
-shared/ansible/group_vars/localhost/mariadb_credentials.yaml
 .vault_pass
 .retry
 .swp
