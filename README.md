@@ -1,10 +1,10 @@
-# Wordpress Dev - Centos7 (Vagrant + Shell + Ansible) (Work In Progress)
+# Wordpress Dev - Centos7 (Vagrant + Shell + Ansible)
 
 The purpose of this project is to have a consistent environemnt to develop a Wordpress site. If you are starting with Wordpress this will help you to get up and running quickly.
 
 The project uses Vagrant with a basic shell script to install Ansible. After Ansible is installed, the main chunk of the Wordpress server is installed and configured by the following 5 roles:  
 1. [base](shared/ansible/roles/base/)
-2. [mariadb](https://github.com/bertvv/ansible-role-mariadb/) --> Thanks to te creators of [ansible-role-mariadb](https://github.com/bertvv/ansible-role-mariadb/) as this role was heavily based on it with just some small modifications.
+2. [mariadb](shared/ansible/roles/mariadb) --> Thanks to te creators of [ansible-role-mariadb](https://github.com/bertvv/ansible-role-mariadb/) as this role was heavily based on it with just some small modifications.
 3. [nginx](shared/ansible/roles/nginx/)
 4. [php7](shared/ansible/roles/php7/)
 5. [wordpress](shared/ansible/roles/wordpress/)
