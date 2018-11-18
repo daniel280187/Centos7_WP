@@ -79,15 +79,3 @@
   notify: 'restart php72'
   tags: php72
 
-
-#- name: 'CREATING - PHP72 default pool config at: {{ php72_def_pool_conf }}'
-#  template:
-#    src: php72_www_conf.j2
-#    dest: "{{ php72_def_pool_conf }}"
-#    owner: root
-#    group: root
-#    setype: php72_config_t
-#    backup: True
-#    mode: '0644'
-#  notify: restart php72
-#  tags: php72
