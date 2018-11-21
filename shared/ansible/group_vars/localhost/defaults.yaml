@@ -1,7 +1,7 @@
 ---
 # BASE ROLE
 auth_key_dir: "/etc/ssh/authorized_keys"
-web_username_pass_hash: '$6$W2R.hhKiHZ0RegSq$0Pi4BMBG5V6u8WqqYq7a5ANGpjHIL/5jH9jMRZWbRHGwh/UaPg22ez..hHaCgEJmkbf/4CD2cC7auzTrDokRd/'
+web_username_pass_hash: '$6$QR4Xo3TJqPdt4WFj$sqxgj4mmnT/I/a8ECFpw649P06es9oD.6cII.hYgK3RkrWpQ7R9Eaw5Pnwi0T9vh8kPPDy.rEC8q7Rcdw/lv91'
 
 users:
   - username: wordpress_dev
